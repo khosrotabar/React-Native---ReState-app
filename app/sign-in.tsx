@@ -1,10 +1,26 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import images from "@/constants/images";
 import icons from "@/constants/icons";
+import { login } from "@/lib/appwrite";
 
 const SignIn = () => {
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    const result = await login();
+
+    if (result) {
+      console.log("Login Successfull");
+    } else {
+      Alert.alert("Error", "Failed To Login!");
+    }
+  };
 
   return (
     <ScrollView contentContainerClassName="h-full bg-white">

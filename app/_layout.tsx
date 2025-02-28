@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 
 import "./global.css";
 import { useEffect } from "react";
+import GlobalProvider from "@/lib/global-provider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,8 +27,10 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <Stack>
-      <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-    </Stack>
+    <GlobalProvider>
+      <Stack>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+      </Stack>
+    </GlobalProvider>
   );
 }
