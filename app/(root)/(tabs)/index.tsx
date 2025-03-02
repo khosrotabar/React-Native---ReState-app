@@ -1,28 +1,30 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import Search from "@/app/components/Search";
+import icons from "@/constants/icons";
+import images from "@/constants/images";
+import { Image, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text className="font-bold text-lg my-10 font-rubik">
-        Welcome to ReState
-      </Text>
-      <TouchableOpacity
-        onPress={() => {
-          router.push("/sign-in");
-        }}
-        activeOpacity={0.7}
-        className="px-4 py-2 bg-primary-300 rounded-lg"
-      >
-        <Text className="text-white font-bold text-base">sign in</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView className="bg-white h-full">
+      <View className="px-5">
+        <View className="flex flex-row items-center justify-between mt-5">
+          <View className="flex flex-row items-center">
+            <Image source={images.avatar} className="size-12 rounded-full" />
+            <View className="flex flex-col items-start ml-2 justify-center">
+              <Text className="text-xs font-rubik text-black-100">
+                Good Morning
+              </Text>
+              <Text className="font-rubik-medium text-base text-black-300">
+                Adrian
+              </Text>
+            </View>
+          </View>
+          <Image source={icons.bell} className="size-6" />
+        </View>
+      </View>
+      <Search />
+    </SafeAreaView>
   );
 };
 

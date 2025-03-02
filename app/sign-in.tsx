@@ -10,13 +10,19 @@ import React from "react";
 import images from "@/constants/images";
 import icons from "@/constants/icons";
 import { login } from "@/lib/appwrite";
+import { useAuth } from "@/lib/global-provider";
+import { Redirect } from "expo-router";
 
 const SignIn = () => {
+  const { loading, isLoggedIn, refetch } = useAuth();
+
+  if (!loading && isLoggedIn) return <Redirect href="/" />;
+
   const handleLogin = async () => {
     const result = await login();
 
     if (result) {
-      console.log("Login Successfull");
+      refetch({});
     } else {
       Alert.alert("Error", "Failed To Login!");
     }
