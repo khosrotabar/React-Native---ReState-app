@@ -3,16 +3,13 @@ import Filters from "@/app/components/Filters";
 import NoResults from "@/app/components/NoResults";
 import Search from "@/app/components/Search";
 import icons from "@/constants/icons";
-import images from "@/constants/images";
 import { getLatestProperties, getProperties } from "@/lib/appwrite";
 import { useAuth } from "@/lib/global-provider";
-import seed from "@/lib/seed";
 import { useAppwrite } from "@/lib/useAppwrite";
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import {
   ActivityIndicator,
-  Button,
   FlatList,
   Image,
   Text,
@@ -24,6 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Home = () => {
   const { user } = useAuth();
   const params = useLocalSearchParams<{ filter?: string; query?: string }>();
+  const MemoFilters = memo(() => <Filters />);
 
   const { data: latestProperties, loading: latestPropertiesLoading } =
     useAppwrite({ fn: getLatestProperties });
@@ -132,7 +130,7 @@ const Home = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Filters />
+            <MemoFilters />
           </View>
         )}
       />

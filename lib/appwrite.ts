@@ -129,9 +129,12 @@ export const getProperties = async ({
 
     if (query) {
       buildQuery.push(
-        Query.search("name", query)
-        // Query.search("address", query),
-        // Query.search("description", query),
+        Query.or([
+          Query.search("name", query),
+          Query.search("address", query),
+          Query.search("description", query),
+          Query.search("type", query),
+        ])
       );
     }
 

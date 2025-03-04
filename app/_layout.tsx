@@ -1,6 +1,9 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
+import "react-native-gesture-handler";
+import "react-native-reanimated";
 
 import "./global.css";
 import { useEffect } from "react";
@@ -32,6 +35,11 @@ export default function RootLayout() {
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         <Stack.Screen name="(root)" options={{ headerShown: false }} />
       </Stack>
+      <StatusBar
+        backgroundColor="transparent"
+        translucent={true}
+        style="dark"
+      />
     </GlobalProvider>
   );
 }

@@ -19,6 +19,7 @@ export default function AppRouteLayout() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="properties/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 }
