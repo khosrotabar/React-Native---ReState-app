@@ -1,20 +1,24 @@
+import { facilities } from "@/constants/data";
 import icons from "@/constants/icons";
 import images from "@/constants/images";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import {
   Dimensions,
+  FlatList,
   ImageProps,
   StyleSheet,
   Text,
   TouchableOpacity,
 } from "react-native";
-import { View, ScrollView, Image } from "react-native";
+import { View, ScrollView, Image, Modal } from "react-native";
 import { runOnJS, useSharedValue, withTiming } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
+import ImageViewer from "react-native-image-zoom-viewer";
+import { galleryImages } from "@/lib/data";
 
 const imagesData = [
   { id: 1, image: images.newYork },
@@ -25,9 +29,11 @@ const imagesData = [
 const { width } = Dimensions.get("window");
 
 const Property = () => {
+  const { id } = useLocalSearchParams();
+  const [visible, setVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const progress = useSharedValue<number>(0);
   const ref = useRef<ICarouselInstance>(null);
-  const { id } = useLocalSearchParams();
   const agentName = "Mohammad Khosrotabar";
 
   const renderItem = ({
@@ -49,6 +55,15 @@ const Property = () => {
       count: index - progress.value,
       animated: true,
     });
+  };
+
+  const openGallery = (index: number) => {
+    setCurrentIndex(index);
+    setVisible(true);
+  };
+
+  const closeImage = () => {
+    setVisible(false);
   };
 
   return (
@@ -191,24 +206,79 @@ const Property = () => {
       </View>
 
       {/* Facilities */}
-      <View className="w-full px-5 mt-[30px] mb-40 gap-5">
+      <View className="w-full px-5 mt-[30px] gap-5">
         <Text className="text-black-300 text-[20px] font-rubik-semibold">
           Facilities
         </Text>
-        <View>
-          <View className="gap-2 items-center justify-center">
-            <View className="w-[60px] h-[60px] rounded-full bg-primary-100 items-center justify-center">
-              <Image source={icons.carPark} className="size-8" />
+        <FlatList
+          data={facilities}
+          scrollEnabled={false}
+          nestedScrollEnabled={true}
+          renderItem={({ item }) => (
+            <View className="gap-2 items-center justify-center flex-1">
+              <View className="w-[60px] h-[60px] rounded-full bg-primary-100 items-center justify-center">
+                <Image source={item.icon} className="size-8" />
+              </View>
+              <Text className="text-sm font-rubik text-black-300 spa">
+                {item.title.substring(0, 8)}
+                {item.title.length > 8 ? "..." : ""}
+              </Text>
             </View>
-            <Text className="text-sm font-rubik text-black-300">
-              Car Parking
-            </Text>
-          </View>
+          )}
+          contentContainerClassName="gap-5"
+          keyExtractor={(item) => item.title}
+          numColumns={4}
+        />
+      </View>
+
+      {/* Gallery */}
+      <View className="mt-[30px] px-5 gap-5">
+        <Text className="text-[20px] text-black-300 font-rubik-semibold">
+          Gallery
+        </Text>
+        <View className="flex-row w-full items-center justify-between">
+          {galleryImages.slice(0, 3).map((img, index) => (
+            <TouchableOpacity
+              className="w-[118px] h-[118px] rounded-[10px] overflow-hidden"
+              key={index}
+              onPress={() => openGallery(index)}
+            >
+              <Image source={{ uri: img }} className="size-full" />
+              {index === 2 && galleryImages.length > 3 && (
+                <View className="absolute top-0 left-0 w-full items-center justify-center h-full bg-black/50">
+                  <Text className="text-white font-rubik-bold text-[20px]">
+                    {galleryImages.length - 3}+
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          ))}
+          <Modal visible={visible} transparent={true}>
+            <ImageViewer
+              imageUrls={galleryImages.map((url) =>
+                typeof url === "string" ? { url: url } : url
+              )}
+              show={visible}
+              index={currentIndex}
+              enableSwipeDown={true}
+              onCancel={closeImage}
+              enablePreload={true}
+              saveToLocalByLongPress={false}
+              pageAnimateTime={500}
+            />
+            <TouchableOpacity
+              className="absolute top-6 p-5 right-6 z-50"
+              onPress={closeImage}
+            >
+              <Text className="text-white text-lg font-rubik-bold">✕</Text>
+            </TouchableOpacity>
+          </Modal>
         </View>
       </View>
-      {/* Gallery */}
       {/* Location */}
       {/* Reviews */}
+
+      <View className="h-40 w-full" />
     </ScrollView>
   );
 };
