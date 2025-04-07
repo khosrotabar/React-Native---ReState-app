@@ -323,7 +323,22 @@ const Property = () => {
           </MapView>
         </View>
       </View>
+
       {/* Reviews */}
+      <View className='mt-[30px] px-5 gap-5'>
+        <View className='flex-row justify-between items-center'>
+          <View className='flex-row items-center gap-[14px]'>
+            <Image
+              source={icons.star}
+              resizeMode='contain'
+              className='size-5'
+            />
+            <Text className='text-[20px] text-[#191D31] font-[600]'>
+              4.8 (1275 reviews)
+            </Text>
+          </View>
+        </View>
+      </View>
 
       <View className='h-40 w-full' />
     </ScrollView>
